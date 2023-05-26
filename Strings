@@ -1,0 +1,25 @@
+import string
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.svm import LinearSVC
+from sklearn.metrics import accuracy_score
+
+# Datos de entrenamiento y etiquetas
+comentarios = ["Este producto es genial", "No estoy satisfecho con el servicio", "Increíble experiencia"]
+etiquetas = [1, 0, 1]  # 1: positivo, 0: negativo
+
+# Extracción de características utilizando TF-IDF
+vectorizer = TfidfVectorizer()
+caracteristicas = vectorizer.fit_transform(comentarios)
+
+# División de los datos en entrenamiento y prueba
+X_train, X_test, y_train, y_test = train_test_split(caracteristicas, etiquetas, test_size=0.2)
+
+# Entrenamiento del clasificador SVM lineal
+clf = LinearSVC()
+clf.fit(X_train, y_train)
+
+# Predicción y evaluación
+predicciones = clf.predict(X_test)
+precision = accuracy_score(y_test, predicciones)
+print("Precisión:", precision)
